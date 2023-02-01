@@ -21,7 +21,7 @@ provider "aws" {
 }
 #creates the vpc
 resource "aws_vpc" "Class30terraform" {
-  cidr_block       = "172.0.0.0/16"
+  cidr_block       = "10.0.0.0/16"
   instance_tenancy = "default"
 
   tags = {
@@ -32,7 +32,7 @@ resource "aws_vpc" "Class30terraform" {
 resource "aws_subnet" "publicsubnet" {
   vpc_id     = aws_vpc.Class30terraform.id
   #https://www.davidc.net/sites/default/subnets/subnets.html 
-  cidr_block = "172.0.120.1/24"
+  cidr_block = "10.0.1.0/24"
 
   tags = {
     Name = "publicsubnet"
@@ -42,12 +42,17 @@ resource "aws_subnet" "publicsubnet" {
 #creates private subnet 
 resource "aws_subnet" "privatesubnet" {
   vpc_id     = aws_vpc.Class30terraform.id
-  cidr_block = "172.0.121.1/24"
+  cidr_block = "10.0.2.0/24"
 
   tags = {
     Name = "privatesubnet"
   }
 }
+#igw
+
+
+#routetable
+
 
 
 
