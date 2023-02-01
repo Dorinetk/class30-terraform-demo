@@ -84,7 +84,6 @@ resource "aws_route_table_association" "rt-b" {
 resource "aws_nat_gateway" "class30" {
   connectivity_type = "private"
   subnet_id         = aws_subnet.privatesubnet.id #publicsubnet???
-  
 }
 
 
