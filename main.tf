@@ -49,13 +49,42 @@ resource "aws_subnet" "privatesubnet" {
   }
 }
 #igw
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.Class30terraform.id
 
+  tags = {
+    Name = "class30-igw"
+  }
+}
 
 #routetable
 
+resource "aws_route_table" "Class30terraform-rt" {
+  vpc_id = aws_vpc.Class30terraform.id
 
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.gw.id
+  }
+}
+resource "aws_route_table_association" "rt-a" {
+  subnet_id      = aws_subnet.publicsubnet.id
+  route_table_id = aws_route_table.Class30terraform-rt.id
+}
 
+resource "aws_route_table" "Class30terraform-priv" {
+  vpc_id = aws_vpc.Class30terraform.id
+}
+resource "aws_route_table_association" "rt-b" {
+  subnet_id      = aws_subnet.privatesubnet.id
+  route_table_id = aws_route_table.Class30terraform-priv.id
+}
 
-
+#nat gateway
+resource "aws_nat_gateway" "class30" {
+  connectivity_type = "private"
+  subnet_id         = aws_subnet.privatesubnet.id #publicsubnet???
+  
+}
 
 
